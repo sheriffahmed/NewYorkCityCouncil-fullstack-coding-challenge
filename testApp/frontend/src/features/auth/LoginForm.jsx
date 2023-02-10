@@ -1,26 +1,25 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import {Avatar} from '@mui/material';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {storeUser, loginUser} from '../features/login/loginSlice' 
-import { useNavigate } from 'react-router-dom';
+import { loginUser} from './authSlice' 
+import { useNavigate,  } from 'react-router-dom';
 
 
 const theme = createTheme();
 
 export default function LoginForm() {
-  const userForm = useSelector((state) => state.login.user)
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -28,15 +27,16 @@ export default function LoginForm() {
       username: data.get('username'),
       password: data.get('password'),
     }
-    dispatch(storeUser(user))
-    dispatch(loginUser(user))
-    // console.log({
-    //   username: data.get('username'),
-    //   password: data.get('password'),
-    // }, 
-    // // userForm
-    // );
+     dispatch(loginUser(user))
+    navigate('home')
   };
+
+  useEffect(() => {
+    const lSToken = localStorage.getItem("token");
+    if (lSToken ) {
+      navigate("home");
+    }
+  }, [navigate, isAuthenticated]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -77,10 +77,7 @@ export default function LoginForm() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+
             <Button
               type="submit"
               fullWidth
