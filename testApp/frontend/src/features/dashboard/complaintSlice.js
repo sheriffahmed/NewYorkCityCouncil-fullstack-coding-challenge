@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+
 const initialState = {
   complaints: [],
   allComplaints: false,
@@ -11,85 +12,95 @@ const initialState = {
   error: "",
 };
 
+
+const TOKEN = "token";
+
+const allComplaintsEndPoint = "http://localhost:8000/api/complaints/"
+const openCasesEndPoint = "http://localhost:8000/api/complaints/openCases/"
+const closedCasesEndPoint = "http://localhost:8000/api/complaints/closedCases/"
+const topComplaintsEndPoint = "http://localhost:8000/api/complaints/topComplaints/"
+const constituentsEndPoint = "http://localhost:8000/api/complaints/constituents/"
+
+
 export const fetchAllComplaints = createAsyncThunk(
   "complaints/fetchAllComplaints",
   async () => {
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem(TOKEN);
     const headers = {
       Authorization: `Token ${token}`,
     };
-    const response = await axios.get("http://localhost:8000/api/complaints/", {
+    const allComplaints = await axios.get(allComplaintsEndPoint, {
       headers,
     });
-    return response.data;
+    return allComplaints.data;
   }
 );
 
 export const fetchOpenCases = createAsyncThunk(
   "complaints/fetchOpenCases",
   async () => {
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem(TOKEN);
     const headers = {
       Authorization: `Token ${token}`,
     };
-    const response = await axios.get(
-      "http://localhost:8000/api/complaints/openCases/",
+    const openCases = await axios.get(
+      openCasesEndPoint,
       {
         headers,
       }
     );
-    return response.data;
+    return openCases.data;
   }
 );
 
 export const fetchClosedCases = createAsyncThunk(
   "complaints/fetchClosedCases",
   async () => {
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem(TOKEN);
     const headers = {
       Authorization: `Token ${token}`,
     };
-    const response = await axios.get(
-      "http://localhost:8000/api/complaints/closedCases/",
+    const closedCases = await axios.get(
+      closedCasesEndPoint,
       {
         headers,
       }
     );
-    return response.data;
+    return closedCases.data;
   }
 );
 
 export const fetchTopComplaints = createAsyncThunk(
   "complaints/fetchTopComplaints",
   async () => {
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem(TOKEN);
     const headers = {
       Authorization: `Token ${token}`,
     };
-    const response = await axios.get(
-      "http://localhost:8000/api/complaints/topComplaints/",
+    const topComplaints = await axios.get(
+      topComplaintsEndPoint,
       {
         headers,
       }
     );
-    return response.data;
+    return topComplaints.data;
   }
 );
 
 export const fetchConstituents = createAsyncThunk(
   "complaints/fetchConstituents",
   async () => {
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem(TOKEN);
     const headers = {
       Authorization: `Token ${token}`,
     };
-    const response = await axios.get(
-      "http://localhost:8000/api/complaints/constituents/",
+    const constituents = await axios.get(
+      constituentsEndPoint,
       {
         headers,
       }
     );
-    return response.data;
+    return constituents.data;
   }
 );
 

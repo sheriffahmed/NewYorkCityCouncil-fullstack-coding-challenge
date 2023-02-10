@@ -9,7 +9,7 @@ import {
   fetchTopComplaints,
   fetchConstituents,
 } from "./complaintSlice";
-import { tokenAuth } from "../auth/authSlice";
+import { tokenAuth, logout } from "../auth/authSlice";
 
 const DashboardPage = () => {
   const complaintData = useSelector(
@@ -39,24 +39,18 @@ const DashboardPage = () => {
     if (lSToken && !isAuthenticated) {
       dispatch(tokenAuth(lSToken));
     }
-
-    if (!complaintData.length) {
-      if (
-        !allComplaints &&
-        !openComplaints &&
-        !closedComplaints &&
-        !topComplaints &&
-        !constituents
-      ) {
-        dispatch(fetchAllComplaints());
-      } else {
-        alert("Complaints for this category could not be found.");
-      }
+    if (
+      !allComplaints &&
+      !openComplaints &&
+      !closedComplaints &&
+      !topComplaints &&
+      !constituents
+    ) {
+      dispatch(fetchAllComplaints());
     }
   }, [
     dispatch,
     user,
-    complaintData,
     isAuthenticated,
     token,
     allComplaints,
@@ -64,6 +58,7 @@ const DashboardPage = () => {
     closedComplaints,
     topComplaints,
     constituents,
+    navigate,
   ]);
   return (
     <div style={{ display: "flex" }}>
@@ -125,6 +120,7 @@ const DashboardPage = () => {
         <button
           style={{ top: "30%", position: "relative" }}
           onClick={() => {
+            dispatch(logout())
             window.localStorage.clear();
             navigate("/");
 

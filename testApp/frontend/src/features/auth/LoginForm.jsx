@@ -28,15 +28,15 @@ export default function LoginForm() {
       password: data.get('password'),
     }
      dispatch(loginUser(user))
-    navigate('home')
   };
 
   useEffect(() => {
     const lSToken = localStorage.getItem("token");
-    if (lSToken ) {
+    if (lSToken || isAuthenticated) {
       navigate("home");
     }
-  }, [navigate, isAuthenticated]);
+  
+  }, [navigate, isAuthenticated, dispatch]);
 
   return (
     <ThemeProvider theme={theme}>

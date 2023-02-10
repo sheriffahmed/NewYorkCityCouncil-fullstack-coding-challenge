@@ -1,22 +1,16 @@
 from rest_framework import viewsets
-from .models import UserProfile, Complaint
+from .models import Complaint
 from django.db.models import Count
-from .serializers import UserSerializer, UserProfileSerializer, ComplaintSerializer
-from django.contrib.auth.models import User
+from .serializers import  UserProfileSerializer, ComplaintSerializer
 from rest_framework.response import Response
-from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.authtoken.views import ObtainAuthToken
+
 
 # Create your views here.
 
 
 class ComplaintViewSet(viewsets.ModelViewSet):
-    http_method_names = ['get']
+    http_method_names = ['get', 'post']
     serializer_class = ComplaintSerializer
 
     def get_queryset(self):
@@ -63,8 +57,6 @@ class ConstituentsViewSet(ComplaintViewSet):
 
 
 class UserProfileViewSet(viewsets.ViewSet):
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = [IsAuthenticated]
     serializer_class = UserProfileSerializer
 
     def list(self, request):
